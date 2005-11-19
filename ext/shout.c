@@ -41,11 +41,11 @@
 #define DEFAULT_MOUNTPOINT "/default"
 
 /*
------------------ ShoutException --------------------
+----------------- ShoutError --------------------
  */
 static VALUE cShoutError;
 
-static void Init_shout_exception() {
+static void Init_shout_error() {
         cShoutError = rb_define_class("ShoutError", rb_eRuntimeError);
 
         rb_define_const(cShoutError, "SUCCESS",
@@ -70,9 +70,9 @@ static void Init_shout_exception() {
                         INT2NUM(SHOUTERR_METADATA));
 }
 
-static void raise_shout_exception(shout_t *conn) {
-        rb_raise(cShoutException, "%d: %s", shout_get_errno(conn),
-                                            shout_get_error(conn));
+static void raise_shout_error(shout_t *conn) {
+        rb_raise(cShoutError, "%d: %s", shout_get_errno(conn),
+                                        shout_get_error(conn));
 }
 
 /*
@@ -102,7 +102,7 @@ static VALUE _sh_metadata_add(VALUE self, VALUE name, VALUE value) {
         err = shout_metadata_add(m, STR2CSTR(name), STR2CSTR(value));
 
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
 
         return value;
@@ -181,7 +181,7 @@ static VALUE _sh_connect(VALUE self) {
 
         err = shout_open(s->conn);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return Qtrue;
 }
@@ -194,7 +194,7 @@ static VALUE _sh_disconnect(VALUE self) {
 
         err = shout_close(s->conn);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return Qtrue;
 }
@@ -209,7 +209,7 @@ static VALUE _sh_send(VALUE self, VALUE to_send) {
         err = shout_send(s->conn, RSTRING(to_send)->ptr,
                                   RSTRING(to_send)->len);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return Qtrue;
 }
@@ -377,7 +377,7 @@ VALUE _sh_host_eq(VALUE self, VALUE value) {
         Check_Type(value, T_STRING);
         err = shout_set_host(s->conn, RSTRING(value)->ptr);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -390,7 +390,7 @@ VALUE _sh_port_eq(VALUE self, VALUE value) {
         Check_Type(value, T_FIXNUM);
         err = shout_set_port(s->conn, FIX2INT(value));
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -403,7 +403,7 @@ VALUE _sh_user_eq(VALUE self, VALUE value) {
         Check_Type(value, T_STRING);
         err = shout_set_user(s->conn, RSTRING(value)->ptr);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -416,7 +416,7 @@ VALUE _sh_pass_eq(VALUE self, VALUE value) {
         Check_Type(value, T_STRING);
         err = shout_set_password(s->conn, RSTRING(value)->ptr);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -434,7 +434,7 @@ VALUE _sh_proto_eq(VALUE self, VALUE value) {
         Check_Type(value, T_FIXNUM);
         err = shout_set_protocol(s->conn, FIX2INT(value));
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -450,7 +450,7 @@ VALUE _sh_format_eq(VALUE self, VALUE value) {
         Check_Type(value, T_FIXNUM);
         err = shout_set_format(s->conn, FIX2INT(value));
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -463,7 +463,7 @@ VALUE _sh_mount_eq(VALUE self, VALUE value) {
         Check_Type(value, T_STRING);
         err = shout_set_mount(s->conn, RSTRING(value)->ptr);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -477,7 +477,7 @@ VALUE _sh_dumpfile_eq(VALUE self, VALUE value) {
         Check_Type(value, T_STRING);
         err = shout_set_dumpfile(s->conn, RSTRING(value)->ptr);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -491,7 +491,7 @@ VALUE _sh_agent_eq(VALUE self, VALUE value) {
         Check_Type(value, T_STRING);
         err = shout_set_agent(s->conn, RSTRING(value)->ptr);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -509,7 +509,7 @@ VALUE _sh_public_eq(VALUE self, VALUE value) {
                 err = shout_set_public(s->conn, 1);
         }
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -522,7 +522,7 @@ VALUE _sh_name_eq(VALUE self, VALUE value) {
         Check_Type(value, T_STRING);
         err = shout_set_name(s->conn, RSTRING(value)->ptr);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -535,7 +535,7 @@ VALUE _sh_url_eq(VALUE self, VALUE value) {
         Check_Type(value, T_STRING);
         err = shout_set_url(s->conn, RSTRING(value)->ptr);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -548,7 +548,7 @@ VALUE _sh_genre_eq(VALUE self, VALUE value) {
         Check_Type(value, T_STRING);
         err = shout_set_genre(s->conn, RSTRING(value)->ptr);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -561,7 +561,7 @@ VALUE _sh_description_eq(VALUE self, VALUE value) {
         Check_Type(value, T_STRING);
         err = shout_set_description(s->conn, RSTRING(value)->ptr);
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return value;
 }
@@ -574,7 +574,7 @@ VALUE _sh_set_metadata(VALUE self, VALUE meta) {
         err = shout_set_metadata(s->conn, m);
 
         if(err != SHOUTERR_SUCCESS) {
-                raise_shout_exception(s->conn);
+                raise_shout_error(s->conn);
         }
         return meta;
 }
@@ -650,7 +650,7 @@ void Init_shout()
         rb_define_const(cShout, "FORMAT_OGG", INT2FIX(SHOUT_FORMAT_OGG));
         rb_define_const(cShout, "FORMAT_VORBIS", INT2FIX(SHOUT_FORMAT_VORBIS));
 
-        Init_shout_exception();
+        Init_shout_error();
         Init_shout_metadata();
 
         /* shout_shutdown(); goes somewhere. *shrug* */
