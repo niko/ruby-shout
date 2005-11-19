@@ -1,11 +1,7 @@
-TO INSTALL
-----------
-
-ruby extconf.rb
-make
-sudo make install 
-
-if you didn't use raa-install.
+PURPOSE
+-------
+ruby-shout lets you send compressed audio over the network to an Icecast
+streaming media server.
 
 REQUIRES
 --------
@@ -17,7 +13,7 @@ SUMMARY
 This extension follows python-shout fairly closely. You make a Shout
 object with Shout.new, set its properties, tell it to connect, then
 send blocks of data, sync and repeat. Disconnect when done. There is
-no #open with a block as there is for a File or Socket: maybe later. 
+no #open that takes a block, as there is for a File or Socket: maybe later. 
 
 LICENSE
 -------
