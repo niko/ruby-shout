@@ -101,9 +101,11 @@ static VALUE _sh_metadata_add(VALUE self, VALUE name, VALUE value) {
         Data_Get_Struct(self, shout_metadata_t, m);
         err = shout_metadata_add(m, STR2CSTR(name), STR2CSTR(value));
 
-        if(err != SHOUTERR_SUCCESS) {
+/* I think we might need a ShoutMetadataError? */
+/*        if(err != SHOUTERR_SUCCESS) {
                 raise_shout_error(s->conn);
         }
+*/
 
         return value;
 }
@@ -206,7 +208,7 @@ static VALUE _sh_send(VALUE self, VALUE to_send) {
         GET_SC(self, s);
 
         Check_SafeStr(to_send);
-        err = shout_send(s->conn, RSTRING(to_send)->ptr,
+        err = shout_send(s->conn, (unsigned char *) (RSTRING(to_send)->ptr),
                                   RSTRING(to_send)->len);
         if(err != SHOUTERR_SUCCESS) {
                 raise_shout_error(s->conn);
