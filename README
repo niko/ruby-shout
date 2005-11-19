@@ -15,6 +15,10 @@ object with Shout.new, set its properties, tell it to connect, then
 send blocks of data, sync and repeat. Disconnect when done. There is
 no #open that takes a block, as there is for a File or Socket: maybe later. 
 
+= Contributors
+
+* Yauhen Kharuzhy: bugfixes and initial metadata support
+
 = License
 This is a BSD license.
 
