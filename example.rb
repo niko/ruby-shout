@@ -4,6 +4,7 @@
 # jared jennings
 # 29 aug 2001
 
+require 'rubygems'
 require 'shout'
 
 BLOCKSIZE = 16384
@@ -11,7 +12,8 @@ BLOCKSIZE = 16384
 s = Shout.new
 s.host = "localhost"
 s.port = 8000
-s.user = "random"
+s.mount = "/example.ogg"
+s.user = "source"
 s.pass = "hackme"
 
 s.connect
