@@ -43,21 +43,21 @@
 /* 
 ----------------- ShoutException -------------------- 
  */
-static VALUE cShoutException;
+static VALUE cShoutError;
 
 static void Init_shout_exception() {
-	cShoutException = rb_define_class("ShoutError", rb_eRuntimeError);
+	cShoutError = rb_define_class("ShoutError", rb_eRuntimeError);
 
-	rb_define_const(cShoutException, "SUCCESS",     SHOUTERR_SUCCESS);
-	rb_define_const(cShoutException, "INSANE",      SHOUTERR_INSANE);
-	rb_define_const(cShoutException, "CONNECTED",   SHOUTERR_CONNECTED);
-	rb_define_const(cShoutException, "UNCONNECTED", SHOUTERR_UNCONNECTED);
-	rb_define_const(cShoutException, "NOCONNECT",   SHOUTERR_NOCONNECT);
-	rb_define_const(cShoutException, "SOCKET",      SHOUTERR_SOCKET);
-	rb_define_const(cShoutException, "UNSUPPORTED", SHOUTERR_UNSUPPORTED);
-	rb_define_const(cShoutException, "NOLOGIN",     SHOUTERR_NOLOGIN);
-	rb_define_const(cShoutException, "MALLOC",      SHOUTERR_MALLOC);
-	rb_define_const(cShoutException, "METADATA",    SHOUTERR_METADATA);
+	rb_define_const(cShoutError, "SUCCESS",     SHOUTERR_SUCCESS);
+	rb_define_const(cShoutError, "INSANE",      SHOUTERR_INSANE);
+	rb_define_const(cShoutError, "CONNECTED",   SHOUTERR_CONNECTED);
+	rb_define_const(cShoutError, "UNCONNECTED", SHOUTERR_UNCONNECTED);
+	rb_define_const(cShoutError, "NOCONNECT",   SHOUTERR_NOCONNECT);
+	rb_define_const(cShoutError, "SOCKET",      SHOUTERR_SOCKET);
+	rb_define_const(cShoutError, "UNSUPPORTED", SHOUTERR_UNSUPPORTED);
+	rb_define_const(cShoutError, "NOLOGIN",     SHOUTERR_NOLOGIN);
+	rb_define_const(cShoutError, "MALLOC",      SHOUTERR_MALLOC);
+	rb_define_const(cShoutError, "METADATA",    SHOUTERR_METADATA);
 }
 
 static void raise_shout_exception(shout_t *conn) {
@@ -94,6 +94,9 @@ static void free_sh(shout_connection *cp) {
 	free(cp);
 }
 
+
+/* Make a new shout object. This method does not connect to any server. See
+ * #connect. */
 static VALUE _sh_initialize(int argc, VALUE *argv, VALUE self) {
 	shout_connection *conn;
 
@@ -103,8 +106,6 @@ static VALUE _sh_initialize(int argc, VALUE *argv, VALUE self) {
 	return self;
 }
 
-/* Make a new shout object. This method does not connect to any server. See
- * #connect. */
 static VALUE _Sh_new(int argc, VALUE *argv, VALUE klass) {
 	VALUE self = Data_Wrap_Struct(klass, 0, free_sh, 0);
 	rb_obj_call_init(self, argc, argv);
@@ -188,7 +189,7 @@ static VALUE _sh_delay(VALUE self) {
 
 
 
-
+/* */
 VALUE _sh_host(VALUE self) {
 	const char *value;
 	shout_connection *s; GET_SC(self, s);
@@ -197,6 +198,7 @@ VALUE _sh_host(VALUE self) {
 	return rb_str_new2(value);
 }
 
+/* */
 VALUE _sh_port(VALUE self) {
 	int value;
 	shout_connection *s; GET_SC(self, s);
@@ -205,6 +207,7 @@ VALUE _sh_port(VALUE self) {
 	return INT2FIX(value);
 }
 
+/* */
 VALUE _sh_user(VALUE self) {
 	const char *value;
 	shout_connection *s; GET_SC(self, s);
@@ -213,6 +216,7 @@ VALUE _sh_user(VALUE self) {
 	return rb_str_new2(value);
 }
 
+/* */
 VALUE _sh_pass(VALUE self) {
 	const char *value;
 	shout_connection *s; GET_SC(self, s);
@@ -221,6 +225,7 @@ VALUE _sh_pass(VALUE self) {
 	return rb_str_new2(value);
 }
 
+/* */
 VALUE _sh_proto(VALUE self) {
 	int value;
 	shout_connection *s; GET_SC(self, s);
@@ -229,6 +234,7 @@ VALUE _sh_proto(VALUE self) {
 	return INT2FIX(value);
 }
 
+/* */
 VALUE _sh_format(VALUE self) {
 	int value;
 	shout_connection *s; GET_SC(self, s);
@@ -237,6 +243,7 @@ VALUE _sh_format(VALUE self) {
 	return INT2FIX(value);
 }
 
+/* */
 VALUE _sh_mount(VALUE self) {
 	const char *value;
 	shout_connection *s; GET_SC(self, s);
@@ -245,6 +252,7 @@ VALUE _sh_mount(VALUE self) {
 	return rb_str_new2(value);
 }
 
+/* */
 VALUE _sh_dumpfile(VALUE self) {
 	const char *value;
 	shout_connection *s; GET_SC(self, s);
@@ -253,6 +261,7 @@ VALUE _sh_dumpfile(VALUE self) {
 	return rb_str_new2(value);
 }
 
+/* */
 VALUE _sh_agent(VALUE self) {
 	const char *value;
 	shout_connection *s; GET_SC(self, s);
@@ -261,6 +270,7 @@ VALUE _sh_agent(VALUE self) {
 	return rb_str_new2(value);
 }
 
+/* */
 VALUE _sh_public(VALUE self) {
 	int value;
 	shout_connection *s; GET_SC(self, s);
@@ -269,6 +279,7 @@ VALUE _sh_public(VALUE self) {
 	return INT2FIX(value);
 }
 
+/* */
 VALUE _sh_name(VALUE self) {
 	const char *value;
 	shout_connection *s; GET_SC(self, s);
@@ -277,6 +288,7 @@ VALUE _sh_name(VALUE self) {
 	return rb_str_new2(value);
 }
 
+/* */
 VALUE _sh_url(VALUE self) {
 	const char *value;
 	shout_connection *s; GET_SC(self, s);
@@ -285,6 +297,7 @@ VALUE _sh_url(VALUE self) {
 	return rb_str_new2(value);
 }
 
+/* */
 VALUE _sh_genre(VALUE self) {
 	const char *value;
 	shout_connection *s; GET_SC(self, s);
@@ -293,6 +306,7 @@ VALUE _sh_genre(VALUE self) {
 	return rb_str_new2(value);
 }
 
+/* */
 VALUE _sh_description(VALUE self) {
 	const char *value;
 	shout_connection *s; GET_SC(self, s);
@@ -463,6 +477,7 @@ VALUE _sh_name_eq(VALUE self, VALUE value) {
 	return value;
 }
 
+/* Set the URL to send the data to. Takes a string. */
 VALUE _sh_url_eq(VALUE self, VALUE value) {
 	int err;
 	shout_connection *s; GET_SC(self, s);
@@ -475,6 +490,7 @@ VALUE _sh_url_eq(VALUE self, VALUE value) {
 	return value;
 }
 
+/* Set the 'genre' of the stream. */
 VALUE _sh_genre_eq(VALUE self, VALUE value) {
 	int err;
 	shout_connection *s; GET_SC(self, s);
@@ -487,6 +503,7 @@ VALUE _sh_genre_eq(VALUE self, VALUE value) {
 	return value;
 }
 
+/* Set a longer description of the stream. Probably several lines of text. */
 VALUE _sh_description_eq(VALUE self, VALUE value) {
 	int err;
 	shout_connection *s; GET_SC(self, s);

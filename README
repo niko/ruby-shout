@@ -1,22 +1,21 @@
-PURPOSE
--------
+= Purpose
+
 ruby-shout lets you send compressed audio over the network to an Icecast
 streaming media server.
 
-REQUIRES
---------
+= Requirements
+
 libshout 2.0, available from icecast.org. libshout 2 requires the ogg
 and vorbis libraries.
 
-SUMMARY
--------
+= Summary of usage
+
 This extension follows python-shout fairly closely. You make a Shout
 object with Shout.new, set its properties, tell it to connect, then
 send blocks of data, sync and repeat. Disconnect when done. There is
 no #open that takes a block, as there is for a File or Socket: maybe later. 
 
-LICENSE
--------
+= License
 This is a BSD license.
 
 Copyright (c) 2003-2005, Jared Jennings
@@ -25,16 +24,16 @@ All rights reserved.
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
 
- * Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
 
- * Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
 
- * Neither the name of Jared Jennings nor the names of contributors may
-   be used to endorse or promote products derived from this software without
-   specific prior written permission.
+* Neither the name of Jared Jennings nor the names of contributors may
+  be used to endorse or promote products derived from this software without
+  specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
