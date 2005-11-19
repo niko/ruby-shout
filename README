@@ -1,0 +1,26 @@
+TO INSTALL
+----------
+
+ruby extconf.rb
+make
+sudo make install 
+
+if you didn't use raa-install.
+
+REQUIRES
+--------
+libshout 2.0, available from icecast.org. libshout 2 requires the ogg
+and vorbis libraries.
+
+SUMMARY
+-------
+This extension follows python-shout fairly closely. You make a Shout
+object with Shout.new, set its properties, tell it to connect, then
+send blocks of data, sync and repeat. Disconnect when done. There is
+no #open with a block as there is for a File or Socket: maybe later. 
+
+LICENSE
+-------
+You may not yet redistribute ruby-shout. Use it for yourself and wait
+for me to paste in a BSD-like license here.
+
