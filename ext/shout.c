@@ -77,6 +77,13 @@ static void raise_shout_error(shout_t *conn) {
                                         shout_get_error(conn));
 }
 
+/* For metadata-related errors, which don't relate to a shout_t, so we can't
+ * use shout_get_errno or shout_get_error on them.
+ */
+static void raise_nonspecific_shout_error(int errno) {
+	rb_raise(cShoutError, "%d", errno);
+}
+
 /*
 ------------------- ShoutMetadata ---------------------
 */
@@ -103,11 +110,9 @@ static VALUE _sh_metadata_add(VALUE self, VALUE name, VALUE value) {
         Data_Get_Struct(self, shout_metadata_t, m);
         err = shout_metadata_add(m, STR2CSTR(name), STR2CSTR(value));
 
-/* I think we might need a ShoutMetadataError? */
-/*        if(err != SHOUTERR_SUCCESS) {
-                raise_shout_error(s->conn);
+        if(err != SHOUTERR_SUCCESS) {
+		raise_nonspecific_shout_error(err);
         }
-*/
 
         return value;
 }
