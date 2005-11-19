@@ -387,6 +387,13 @@ VALUE _sh_description(VALUE self) {
         return rb_str_new2(value);
 }
 
+/* Unimplemented: audio_info */
+
+/* audio_info and metadata should both be objects that always exist, and have
+ * [] and []= methods by which you get to the stuff in them. i.e. act like
+ * Hashes, because they are, albeit in another language.
+ */
+
 /*
 --------------------------- setters ------------------------------
 */
@@ -588,7 +595,11 @@ VALUE _sh_description_eq(VALUE self, VALUE value) {
         return value;
 }
 
-VALUE _sh_set_metadata(VALUE self, VALUE meta) {
+/* Set MP3 metadata. Create a ShoutMetadata object, add some stuff to it and
+ * pass it to this method. If the format of the stream isn't MP3, and you try
+ * to set its metadata, an exception will most likely be raised.
+ */
+VALUE _sh_metadata_eq(VALUE self, VALUE meta) {
         int err;
         shout_connection *s; GET_SC(self, s);
         shout_metadata_t *m; Data_Get_Struct(meta, shout_metadata_t, m);
@@ -645,9 +656,9 @@ void Init_shout()
         rb_define_method(cShout, "url",       _sh_url,         0);
         rb_define_method(cShout, "genre",     _sh_genre,       0);
         rb_define_method(cShout, "description",_sh_description,0);
+	/* metadata getting is still unsupported. */
         /* audio info thingy. */
-        /* metadata thingy. */
-        /* leave for version 2.1 */
+        /* leave for version 2.2 */
 
         /* setters */
         rb_define_method(cShout, "host=",       _sh_host_eq,        1);
@@ -667,7 +678,7 @@ void Init_shout()
         rb_define_method(cShout, "url=",        _sh_url_eq,         1);
         rb_define_method(cShout, "genre=",      _sh_genre_eq,       1);
         rb_define_method(cShout, "description=", _sh_description_eq,1);
-        rb_define_method(cShout, "metadata=",   _sh_set_metadata,   1);
+        rb_define_method(cShout, "metadata=",   _sh_metadata_eq,    1);
 
 	rb_define_const(cShout, "HTTP", INT2FIX(SHOUT_PROTOCOL_HTTP));
 	rb_define_const(cShout, "XAUDIOCAST", INT2FIX(SHOUT_PROTOCOL_XAUDIOCAST));
