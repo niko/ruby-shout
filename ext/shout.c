@@ -68,6 +68,8 @@ static void Init_shout_error() {
                         INT2NUM(SHOUTERR_MALLOC));
         rb_define_const(cShoutError, "METADATA",
                         INT2NUM(SHOUTERR_METADATA));
+	rb_define_const(cShoutError, "BUSY",
+			INT2NUM(SHOUTERR_BUSY));
 }
 
 static void raise_shout_error(shout_t *conn) {
@@ -199,6 +201,24 @@ static VALUE _sh_disconnect(VALUE self) {
                 raise_shout_error(s->conn);
         }
         return Qtrue;
+}
+
+/* Returns true if connected, false otherwise, 
+ * nil if something really crazy happened. 
+ */
+static VALUE _sh_connectedp(VALUE self) {
+	int err;
+	shout_connection *s;
+	GET_SC(self, s);
+
+	err = shout_get_connected(s->conn);
+	if(err == SHOUTERR_CONNECTED) {
+		return Qtrue;
+	} else if(err == SHOUTERR_UNCONNECTED) {
+		return Qfalse;
+	} else {
+		return Qnil;
+	}
 }
 
 /* Send some data. to_send is a String containing the data to send. */
@@ -601,6 +621,7 @@ void Init_shout()
         rb_define_method(cShout, "open", _sh_connect, 0);
         rb_define_method(cShout, "disconnect", _sh_disconnect, 0);
         rb_define_method(cShout, "close", _sh_disconnect, 0);
+	rb_define_method(cShout, "connected?", _sh_connectedp, 0);
 
         rb_define_method(cShout, "send", _sh_send, 1);
         rb_define_method(cShout, "sync", _sh_sync, 0);
@@ -648,9 +669,13 @@ void Init_shout()
         rb_define_method(cShout, "description=", _sh_description_eq,1);
         rb_define_method(cShout, "metadata=",   _sh_set_metadata,   1);
 
-        rb_define_const(cShout, "FORMAT_MP3", INT2FIX(SHOUT_FORMAT_MP3));
-        rb_define_const(cShout, "FORMAT_OGG", INT2FIX(SHOUT_FORMAT_OGG));
-        rb_define_const(cShout, "FORMAT_VORBIS", INT2FIX(SHOUT_FORMAT_VORBIS));
+	rb_define_const(cShout, "HTTP", INT2FIX(SHOUT_PROTOCOL_HTTP));
+	rb_define_const(cShout, "XAUDIOCAST", INT2FIX(SHOUT_PROTOCOL_XAUDIOCAST));
+	rb_define_const(cShout, "ICY", INT2FIX(SHOUT_PROTOCOL_ICY));
+
+        rb_define_const(cShout, "MP3", INT2FIX(SHOUT_FORMAT_MP3));
+        rb_define_const(cShout, "OGG", INT2FIX(SHOUT_FORMAT_OGG));
+        rb_define_const(cShout, "VORBIS", INT2FIX(SHOUT_FORMAT_VORBIS));
 
         Init_shout_error();
         Init_shout_metadata();
