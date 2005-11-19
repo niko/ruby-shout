@@ -1,8 +1,7 @@
 #!/usr/bin/ruby
 
-# example.rb
-# jared jennings
-# 29 aug 2001
+# Stream all the files given on the commandline to the Icecast server on
+# localhost. 
 
 require 'rubygems'
 require 'shout'
@@ -21,6 +20,9 @@ s.connect
 ARGV.each do |filename|
 	File.open(filename) do |file|
 		puts "sending data from #{filename}"
+		m = ShoutMetadata.new
+		m.add 'filename', filename
+		s.metadata = m
 
 		while data = file.read(BLOCKSIZE)
 			s.send data
