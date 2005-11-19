@@ -48,16 +48,26 @@ static VALUE cShoutError;
 static void Init_shout_exception() {
         cShoutError = rb_define_class("ShoutError", rb_eRuntimeError);
 
-	rb_define_const(cShoutError, "SUCCESS",     SHOUTERR_SUCCESS);
-	rb_define_const(cShoutError, "INSANE",      SHOUTERR_INSANE);
-	rb_define_const(cShoutError, "CONNECTED",   SHOUTERR_CONNECTED);
-	rb_define_const(cShoutError, "UNCONNECTED", SHOUTERR_UNCONNECTED);
-	rb_define_const(cShoutError, "NOCONNECT",   SHOUTERR_NOCONNECT);
-	rb_define_const(cShoutError, "SOCKET",      SHOUTERR_SOCKET);
-	rb_define_const(cShoutError, "UNSUPPORTED", SHOUTERR_UNSUPPORTED);
-	rb_define_const(cShoutError, "NOLOGIN",     SHOUTERR_NOLOGIN);
-	rb_define_const(cShoutError, "MALLOC",      SHOUTERR_MALLOC);
-	rb_define_const(cShoutError, "METADATA",    SHOUTERR_METADATA);
+        rb_define_const(cShoutError, "SUCCESS",
+                        INT2NUM(SHOUTERR_SUCCESS));
+        rb_define_const(cShoutError, "INSANE",
+                        INT2NUM(SHOUTERR_INSANE));
+        rb_define_const(cShoutError, "CONNECTED",
+                        INT2NUM(SHOUTERR_CONNECTED));
+        rb_define_const(cShoutError, "UNCONNECTED",
+                        INT2NUM(SHOUTERR_UNCONNECTED));
+        rb_define_const(cShoutError, "NOCONNECT",
+                        INT2NUM(SHOUTERR_NOCONNECT));
+        rb_define_const(cShoutError, "SOCKET",
+                        INT2NUM(SHOUTERR_SOCKET));
+        rb_define_const(cShoutError, "UNSUPPORTED",
+                        INT2NUM(SHOUTERR_UNSUPPORTED));
+        rb_define_const(cShoutError, "NOLOGIN",
+                        INT2NUM(SHOUTERR_NOLOGIN));
+        rb_define_const(cShoutError, "MALLOC",
+                        INT2NUM(SHOUTERR_MALLOC));
+        rb_define_const(cShoutError, "METADATA",
+                        INT2NUM(SHOUTERR_METADATA));
 }
 
 static void raise_shout_exception(shout_t *conn) {
