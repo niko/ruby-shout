@@ -75,9 +75,49 @@ static void raise_shout_exception(shout_t *conn) {
                                             shout_get_error(conn));
 }
 
+/*
+------------------- ShoutMetadata ---------------------
+*/
 
-/* 
---------------------- Shout --------------------------- 
+static VALUE cShoutMetadata;
+
+static VALUE _sh_metadata_new(VALUE class) {
+        shout_metadata_t *m;
+        VALUE meta;
+
+        m = shout_metadata_new();
+
+        meta = Data_Wrap_Struct(class, 0, shout_metadata_free, m);
+
+        rb_obj_call_init(meta, 0, 0);
+
+        return meta;
+}
+
+static VALUE _sh_metadata_add(VALUE self, VALUE name, VALUE value) {
+        shout_metadata_t *m;
+        int err;
+
+        Data_Get_Struct(self, shout_metadata_t, m);
+        err = shout_metadata_add(m, STR2CSTR(name), STR2CSTR(value));
+
+        if(err != SHOUTERR_SUCCESS) {
+                raise_shout_exception(s->conn);
+        }
+
+        return value;
+}
+
+static void Init_shout_metadata() {
+
+        cShoutMetadata = rb_define_class("ShoutMetadata", rb_cObject);
+
+        rb_define_singleton_method(cShoutMetadata, "new", _sh_metadata_new, 0);
+        rb_define_method(cShoutMetadata, "add", _sh_metadata_add, 2);
+}
+
+/*
+--------------------- Shout ---------------------------
  */
 
 static void invalid_object() {
@@ -526,6 +566,21 @@ VALUE _sh_description_eq(VALUE self, VALUE value) {
         return value;
 }
 
+VALUE _sh_set_metadata(VALUE self, VALUE meta) {
+        int err;
+        shout_connection *s; GET_SC(self, s);
+        shout_metadata_t *m; Data_Get_Struct(meta, shout_metadata_t, m);
+
+        err = shout_set_metadata(s->conn, m);
+
+        if(err != SHOUTERR_SUCCESS) {
+                raise_shout_exception(s->conn);
+        }
+        return meta;
+}
+
+
+
 /*
 ----------------------------------------------------------------
 */
@@ -589,6 +644,14 @@ void Init_shout()
         rb_define_method(cShout, "url=",        _sh_url_eq,         1);
         rb_define_method(cShout, "genre=",      _sh_genre_eq,       1);
         rb_define_method(cShout, "description=", _sh_description_eq,1);
+        rb_define_method(cShout, "metadata=",   _sh_set_metadata,   1);
 
-	/* shout_shutdown(); goes somewhere. *shrug* */
+        rb_define_const(cShout, "FORMAT_MP3", INT2FIX(SHOUT_FORMAT_MP3));
+        rb_define_const(cShout, "FORMAT_OGG", INT2FIX(SHOUT_FORMAT_OGG));
+        rb_define_const(cShout, "FORMAT_VORBIS", INT2FIX(SHOUT_FORMAT_VORBIS));
+
+        Init_shout_exception();
+        Init_shout_metadata();
+
+        /* shout_shutdown(); goes somewhere. *shrug* */
 }
