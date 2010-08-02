@@ -12,10 +12,17 @@ def base_dir
   File.expand_path File.join(File.dirname(__FILE__), '..')
 end
 
-def clean_gem
+def remove_pkg
   command = %Q{
     cd #{base_dir}
     rm -rf pkg
+  }
+  `#{command}`
+end
+
+def clean_test_gem
+  command = %Q{
+    cd #{base_dir}
     rm -rf test/gem
   }
   `#{command}`
@@ -40,6 +47,7 @@ end
 clean_gem
 repackage
 install_gem
+remove_pkg
 
 $LOAD_PATH.clear
 $LOAD_PATH << File.join(File.dirname(__FILE__), 'gem/gems/ruby-shout-2.1')
