@@ -1,5 +1,4 @@
 require 'rubygems'
-Gem::manage_gems
 require 'rake/gempackagetask'
 
 spec = Gem::Specification.new {|s|
