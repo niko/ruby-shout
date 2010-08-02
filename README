@@ -1,3 +1,23 @@
+= What is this?
+
+This is the attempt make the ruby-shout library work for ruby 1.9.2. Any additions/bugfixes/improvements are highly welcome. Fork me!
+
+= State
+
+* Included this [1] ruby 1.9 patch although it seems to have some issues [2]. I hope to have fixed the issues with this:
+* Replaced STR2CSTR for StringValuePtr as STR2CSTR doesn't work for 1.9 any more
+* Added format = Shout::MP3 to the example as this is absolutely needed by libshout.
+* Added an integration test which builds and installs the gem and plays some sound on a local icecast server.
+
+[1] http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?revision=1.1&view=markup
+[2] http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?view=log
+
+
+Copyright (c) 2010 Niko Dittmann.
+
+
+Old Readme (this doesn't mean, you shouldn't read this, because you should):
+
 = Purpose
 
 ruby-shout lets you send compressed audio over the network to an Icecast
