@@ -14,6 +14,7 @@ s.port = 8000
 s.mount = "/example.ogg"
 s.user = "source"
 s.pass = "hackme"
+s.format = Shout::MP3
 
 s.connect
 
