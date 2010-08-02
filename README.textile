@@ -1,8 +1,10 @@
-= What is this?
+h1. Ruby-Shout
+
+h2. What is this?
 
 This is the attempt make the ruby-shout library work for ruby 1.9.2. Any additions/bugfixes/improvements are highly welcome. Fork me!
 
-= State
+h2. State
 
 * Included this [1] ruby 1.9 patch although it seems to have some issues [2]. I hope to have fixed the issues with this:
 * Replaced STR2CSTR for StringValuePtr as STR2CSTR doesn't work for 1.9 any more
@@ -18,28 +20,28 @@ Copyright (c) 2010 Niko Dittmann.
 
 Old Readme (this doesn't mean, you shouldn't read this, because you should):
 
-= Purpose
+h2. Purpose
 
 ruby-shout lets you send compressed audio over the network to an Icecast
 streaming media server.
 
-= Requirements
+h2. Requirements
 
 libshout 2.0, available from icecast.org. libshout 2 requires the ogg
 and vorbis libraries.
 
-= Summary of usage
+h2. Summary of usage
 
 This extension follows python-shout fairly closely. You make a Shout
 object with Shout.new, set its properties, tell it to connect, then
 send blocks of data, sync and repeat. Disconnect when done. There is
 no #open that takes a block, as there is for a File or Socket: maybe later. 
 
-= Contributors
+h2. Contributors
 
 * Yauhen Kharuzhy: bugfixes and initial metadata support
 
-= License
+h2. License
 This is a BSD license.
 
 Copyright (c) 2003-2005, Jared Jennings
