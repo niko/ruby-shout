@@ -1,21 +1,16 @@
 require 'rubygems'
 require 'rake/gempackagetask'
 
-spec = Gem::Specification.new {|s|
-    s.name = 'ruby-shout'
-    s.version = '2.1'
-    s.author = 'Jared Jennings'
-    s.email = 'jjenning@fastmail.fm'
-    s.homepage = 'http://www.dingoskidneys.com/~jaredj/'
-    s.platform = Gem::Platform::RUBY
-    s.summary = 'Send audio over the network to an Icecast server'
-    s.files = ['ext/shout.c', 'ext/extconf.rb', 'example.rb']
-    s.has_rdoc = true
-    s.extensions = ['ext/extconf.rb']
-    s.autorequire = 'shout'
-    s.require_path = '.'
-}
-
-Rake::GemPackageTask.new(spec) do |pkg|
-    pkg.need_tar = true
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |s|
+    s.name = "ruby-shout"
+    s.summary = "Send audio over the network to an Icecast server"
+    s.email = "mail@niko-dittmann.com"
+    s.homepage = "http://github.com/niko/ruby-shout"
+    s.authors = ["Niko Dittmann", "Jared Jennings"]
+    s.files =  FileList["[A-Z]*", "{lib,test}/**/*"]
+  end
+rescue LoadError
+  puts "Jeweler, or one of its dependencies, is not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
