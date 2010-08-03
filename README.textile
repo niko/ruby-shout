@@ -6,13 +6,10 @@ This is the attempt make the ruby-shout library work for ruby 1.9. Any additions
 
 h2. Recent Changes
 
-* Included the ruby 1.9 patch[1] although it seems to have some issues[2]. I hope to have fixed the issues with this:
+* Included the "ruby 1.9 patch":http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?revision=1.1&view=markup although it seems to have "some issues":http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?view=log. I hope to have fixed the issues with this:
 * Replaced STR2CSTR for StringValuePtr as STR2CSTR doesn't work for 1.9 any more
 * Added format = Shout::MP3 to the example as this is absolutely needed by the latest versions of libshout.
 * Added an integration test which builds and installs the gem and plays some sound on a local icecast server. I mainly did that because the old version of ruby-shout didn't even compile for ruby 1.9.
-
-[1] http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?revision=1.1&view=markup
-[2] http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?view=log
 
 h1. State
 
@@ -25,9 +22,7 @@ I tested this version of ruby-shout to build and run on
 * ruby-1.9.2-rc2  [i386]   ubuntu 2.6.32
 
 
-
 Copyright (c) 2010 Niko Dittmann.
-
 
 Old Readme (this doesn't mean, you shouldn't read this, because you should):
 
