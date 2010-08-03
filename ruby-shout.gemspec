@@ -8,8 +8,9 @@ Gem::Specification.new do |s|
   s.version = "2.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Niko Dittmann", "Jared Jennings"]
-  s.date = %q{2010-08-02}
+  s.authors = ["Jared Jennings", "Niko Dittmann"]
+  s.date = %q{2010-08-03}
+  s.description = %q{Ruby bindings for libshout 2, a "Library which can be used to write a source client like ices" for Icecast (http://www.icecast.org/download.php).}
   s.email = %q{mail@niko-dittmann.com}
   s.extensions = ["ext/extconf.rb"]
   s.extra_rdoc_files = [
@@ -19,13 +20,13 @@ Gem::Specification.new do |s|
     "README.textile",
      "Rakefile",
      "VERSION",
-     "lib/shout.bundle",
-     "test/integration-test.rb",
-     "test/test.mp3"
+     "ext/extconf.rb",
+     "ext/shout.c"
   ]
   s.homepage = %q{http://github.com/niko/ruby-shout}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
+  s.rubyforge_project = %q{ruby-shout}
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Send audio over the network to an Icecast server}
   s.test_files = [

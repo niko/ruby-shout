@@ -12,7 +12,12 @@ def base_dir
   File.expand_path File.join(File.dirname(__FILE__), '..')
 end
 
+def version
+  File.open(File.join(base_dir, 'VERSION')).readline.strip
+end
+
 def remove_pkg
+  puts '=> removing pkg/'
   command = %Q{
     cd #{base_dir}
     rm -rf pkg
@@ -21,36 +26,30 @@ def remove_pkg
 end
 
 def clean_test_gem
+  puts '=> removing test/test_gem_installation/'
   command = %Q{
     cd #{base_dir}
-    rm -rf test/gem
-  }
-  `#{command}`
-end
-
-def repackage
-  command = %Q{
-    cd #{base_dir}
-    rake repackage
+    rm -rf test/test_gem_installation
   }
   `#{command}`
 end
 
 def install_gem
+  puts '=> building the gem into pkg/ and installing into test/test_gem_installation/'
   command = %Q{
     cd #{base_dir}
-    gem install -i test/gem/ pkg/ruby-shout-2.1.gem
+    rake build
+    gem install --no-test --no-rdoc --no-ri --install-dir test/test_gem_installation --bindir test/test_gem_installation pkg/ruby-shout-2.1.0.gem
   }
   `#{command}`
 end
 
-clean_gem
-repackage
+clean_test_gem
 install_gem
 remove_pkg
 
 $LOAD_PATH.clear
-$LOAD_PATH << File.join(File.dirname(__FILE__), 'gem/gems/ruby-shout-2.1')
+$LOAD_PATH << File.join(base_dir, "test/test_gem_installation/gems/ruby-shout-#{version}/lib")
 require 'shout'
 
 def test_all
@@ -69,7 +68,7 @@ def test_all
   filename = File.join(File.dirname(__FILE__), 'test.mp3')
 
   File.open(filename) do |file|
-    puts "sending data from #{filename}; go check http://localhost:8000/test"
+    puts "=> sending data from #{filename}...\n     go check http://localhost:8000/test"
     m = ShoutMetadata.new
     m.add 'filename', filename
     m.add 'artist', 'gromozek'
@@ -85,7 +84,7 @@ def test_all
 
   s.disconnect
 ensure
-  clean_gem
+  clean_test_gem
 end
 
 test_all
