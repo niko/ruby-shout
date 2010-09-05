@@ -1,6 +1,15 @@
 require 'rubygems'
 require 'rake/gempackagetask'
 
+task :default => [:test]
+
+namespace :test do
+  desc "run the build integration test"
+  task :integration do
+    ruby "test/integration-test.rb"
+  end
+end
+
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
@@ -16,5 +25,5 @@ begin
     
   end
 rescue LoadError
-  puts "Jeweler, or one of its dependencies, is not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+  puts "Jeweler not available. Install it with: gem install jeweler"
 end

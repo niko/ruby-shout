@@ -1,56 +1,60 @@
 h1. Ruby-Shout
 
-h2. What is this?
+h2. Purpose
 
-This is the attempt make the ruby-shout library work for ruby 1.9. Any additions/bugfixes/improvements are highly welcome. Fork me!
+ruby-shout lets you send compressed audio over the network to an Icecast streaming media server.
+
+h2. Requirements
+
+libshout 2.0, available from icecast.org. libshout 2 requires the ogg and vorbis libraries.
+
+h2. Summary of usage
+
+This extension follows python-shout fairly closely. You make a Shout object with Shout.new, set its properties, tell it to connect, then send blocks of data, sync and repeat. Disconnect when done.
+
+h2. Usage
+
+See example.rb. Run it like
+
+  ./example.rb test/test.mp3
+
+h2. Todo
+
+* proper unit tests (blush)
+
+h2. History & Credits
+
+* 2003 - 2005 Jared Jenning built and maintained ruby-shout
+* Yauhen Kharuzhy helped with bugfixes and initial metadata support
+* 2010 "Overlay" (real name unknown to me) patched ruby-shout for ruby 1.9 support, Diego Elio "Flameeyes" Pettenò "incorporated patch into the gentoo package":http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?revision=1.1&view=markup. It got removed later on due to "some issues":http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?view=markup.
+* 2010 Niko Dittman re-added the patch and fixed the issues. See "Recent Changes" for details.
 
 h2. Recent Changes
 
 * Included the "ruby 1.9 patch":http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?revision=1.1&view=markup although it seems to have "some issues":http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?view=log. I hope to have fixed the issues with this:
 * Replaced STR2CSTR for StringValuePtr as STR2CSTR doesn't work for 1.9 any more
 * Added format = Shout::MP3 to the example as this is absolutely needed by the latest versions of libshout.
-* Added an integration test which builds and installs the gem and plays some sound on a local icecast server. I mainly did that because the old version of ruby-shout didn't even compile for ruby 1.9.
+* Added an integration test which builds and installs the gem and plays some sound on a local icecast server. I mainly did that because the old version of ruby-shout didn't even compile for ruby 1.9. Run with:
 
-h1. State
+  rake test:integration
+
+h2. State
 
 I tested this version of ruby-shout to build and run on
 
 * ruby-1.8.7-p174 [x86_64] OSX 10.6
 * ruby-1.9.1-p378 [x86_64] OSX 10.6
 * ruby-1.9.2-rc1  [x86_64] OSX 10.6
+* ruby-1.9.2-p0   [x86_64] OSX 10.6
 * ruby-1.8.7-p299 [i386]   ubuntu 2.6.32
 * ruby-1.9.2-rc2  [i386]   ubuntu 2.6.32
-
-
-Copyright (c) 2010 Niko Dittmann.
-
-Old Readme (this doesn't mean, you shouldn't read this, because you should):
-
-h2. Purpose
-
-ruby-shout lets you send compressed audio over the network to an Icecast
-streaming media server.
-
-h2. Requirements
-
-libshout 2.0, available from icecast.org. libshout 2 requires the ogg
-and vorbis libraries.
-
-h2. Summary of usage
-
-This extension follows python-shout fairly closely. You make a Shout
-object with Shout.new, set its properties, tell it to connect, then
-send blocks of data, sync and repeat. Disconnect when done. There is
-no #open that takes a block, as there is for a File or Socket: maybe later. 
-
-h2. Contributors
-
-* Yauhen Kharuzhy: bugfixes and initial metadata support
 
 h2. License
 This is a BSD license.
 
 Copyright (c) 2003-2005, Jared Jennings
+Copyright (c) 2010 Niko Dittmann
+
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -77,4 +81,3 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-

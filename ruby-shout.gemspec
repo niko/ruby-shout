@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruby-shout}
-  s.version = "2.1.0"
+  s.version = "2.2.0.pre1"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jared Jennings", "Niko Dittmann"]
-  s.date = %q{2010-08-03}
+  s.date = %q{2010-09-05}
   s.description = %q{Ruby bindings for libshout 2, a "Library which can be used to write a source client like ices" for Icecast (http://www.icecast.org/download.php).}
   s.email = %q{mail@niko-dittmann.com}
   s.extensions = ["ext/extconf.rb"]
