@@ -5,6 +5,7 @@
    redone for libshout2 18 jul 2003
 
    Copyright (c) 2003-2005, Jared Jennings
+   Copyright (c) 2010 Niko Dittmann
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -17,7 +18,7 @@
       this list of conditions and the following disclaimer in the documentation
       and/or other materials provided with the distribution.
 
-    * Neither the name of Jared Jennings nor the names of contributors may
+    * Neither the names of the authors nor the names of contributors may
       be used to endorse or promote products derived from this software without
       specific prior written permission.
 

@@ -2,11 +2,11 @@ h1. Ruby-Shout
 
 h2. Purpose
 
-ruby-shout lets you send compressed audio over the network to an Icecast streaming media server.
+ruby-shout lets you send compressed audio over the network to an "Icecast":http://www.icecast.org/ streaming media server.
 
 h2. Requirements
 
-libshout 2.0, available from icecast.org. libshout 2 requires the ogg and vorbis libraries.
+libshout 2.0, available from "icecast.org":http://www.icecast.org/download.php. libshout 2 requires the ogg and vorbis libraries.
 
 h2. Summary of usage
 
@@ -24,7 +24,8 @@ h2. Todo
 
 h2. History & Credits
 
-* 2003 - 2005 Jared Jenning built and maintained ruby-shout
+* 2001 Jared Jenning built the initial version for libshout 1
+* 2003 Jared Jenning rebuilt ruby-shout for libshout 2 and maintained it to until 2005
 * Yauhen Kharuzhy helped with bugfixes and initial metadata support
 * 2010 "Overlay" (real name unknown to me) patched ruby-shout for ruby 1.9 support, Diego Elio "Flameeyes" Pettenò "incorporated patch into the gentoo package":http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?revision=1.1&view=markup. It got removed later on due to "some issues":http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?view=markup.
 * 2010 Niko Dittman re-added the patch and fixed the issues. See "Recent Changes" for details.
@@ -53,7 +54,7 @@ h2. License
 This is a BSD license.
 
 Copyright (c) 2003-2005, Jared Jennings
-Copyright (c) 2010 Niko Dittmann
+Copyright (c) 2010, Niko Dittmann
 
 All rights reserved.
 
@@ -67,7 +68,7 @@ modification, are permitted provided that the following conditions are met:
   this list of conditions and the following disclaimer in the documentation
   and/or other materials provided with the distribution.
 
-* Neither the name of Jared Jennings nor the names of contributors may
+* Neither the names of the authors nor the names of contributors may
   be used to endorse or promote products derived from this software without
   specific prior written permission.
 
