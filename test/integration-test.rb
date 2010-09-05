@@ -39,7 +39,7 @@ def install_gem
   command = %Q{
     cd #{base_dir}
     rake build
-    gem install --no-test --no-rdoc --no-ri --install-dir test/test_gem_installation --bindir test/test_gem_installation pkg/ruby-shout-2.1.0.gem
+    gem install --no-test --no-rdoc --no-ri --install-dir test/test_gem_installation --bindir test/test_gem_installation pkg/ruby-shout-#{version}.gem
   }
   `#{command}`
 end
