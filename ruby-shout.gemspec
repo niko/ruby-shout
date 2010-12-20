@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jared Jennings", "Niko Dittmann"]
-  s.date = %q{2010-09-05}
+  s.date = %q{2010-12-20}
   s.description = %q{Ruby bindings for libshout 2, a "Library which can be used to write a source client like ices" for Icecast (http://www.icecast.org/download.php).}
   s.email = %q{mail@niko-dittmann.com}
   s.extensions = ["ext/extconf.rb"]

@@ -42,8 +42,8 @@
 #define DEFAULT_MOUNTPOINT "/default"
 
 #ifndef RSTRING_LEN
-#define RSTRING_LEN(str)	RSTRING(str)->len
-#define RSTRING_PTR(str)	RSTRING(str)->ptr
+#define RSTRING_LEN(str)        RSTRING(str)->len
+#define RSTRING_PTR(str)        RSTRING(str)->ptr
 #endif
 
 /*
@@ -74,9 +74,19 @@ static void Init_shout_error() {
                         INT2NUM(SHOUTERR_MALLOC));
         rb_define_const(cShoutError, "METADATA",
                         INT2NUM(SHOUTERR_METADATA));
-	rb_define_const(cShoutError, "BUSY",
-			INT2NUM(SHOUTERR_BUSY));
+        rb_define_const(cShoutError, "BUSY",
+                        INT2NUM(SHOUTERR_BUSY));
 }
+
+
+
+typedef struct {
+        shout_t *conn;
+        unsigned int len;
+        unsigned char *data;
+        } SEND_SHOUT_T;
+
+static VALUE _sh_send_non_block(SEND_SHOUT_T *data);
 
 static void raise_shout_error(shout_t *conn) {
         rb_raise(cShoutError, "%d: %s", shout_get_errno(conn),
@@ -87,7 +97,7 @@ static void raise_shout_error(shout_t *conn) {
  * use shout_get_errno or shout_get_error on them.
  */
 static void raise_nonspecific_shout_error(int errno) {
-	rb_raise(cShoutError, "%d", errno);
+        rb_raise(cShoutError, "%d", errno);
 }
 
 /*
@@ -117,7 +127,7 @@ static VALUE _sh_metadata_add(VALUE self, VALUE name, VALUE value) {
         err = shout_metadata_add(m, StringValuePtr(name), StringValuePtr(value));
 
         if(err != SHOUTERR_SUCCESS) {
-		raise_nonspecific_shout_error(err);
+                raise_nonspecific_shout_error(err);
         }
 
         return value;
@@ -214,22 +224,22 @@ static VALUE _sh_disconnect(VALUE self) {
         return Qtrue;
 }
 
-/* Returns true if connected, false otherwise, 
- * nil if something really crazy happened. 
+/* Returns true if connected, false otherwise,
+ * nil if something really crazy happened.
  */
 static VALUE _sh_connectedp(VALUE self) {
-	int err;
-	shout_connection *s;
-	GET_SC(self, s);
+        int err;
+        shout_connection *s;
+        GET_SC(self, s);
 
-	err = shout_get_connected(s->conn);
-	if(err == SHOUTERR_CONNECTED) {
-		return Qtrue;
-	} else if(err == SHOUTERR_UNCONNECTED) {
-		return Qfalse;
-	} else {
-		return Qnil;
-	}
+        err = shout_get_connected(s->conn);
+        if(err == SHOUTERR_CONNECTED) {
+                return Qtrue;
+        } else if(err == SHOUTERR_UNCONNECTED) {
+                return Qfalse;
+        } else {
+                return Qnil;
+        }
 }
 
 /* Send some data. to_send is a String containing the data to send. */
@@ -246,6 +256,35 @@ static VALUE _sh_send(VALUE self, VALUE to_send) {
         }
         return Qtrue;
 }
+
+
+
+        
+/* Send some data. to_send is a String containing the data to send. */
+static VALUE _sh_send_struct(VALUE self, VALUE to_send) {
+        SEND_SHOUT_T data;
+        int err;
+        shout_connection *s;
+        GET_SC(self, s);
+
+        Check_SafeStr(to_send);
+        
+        data.conn = s->conn;
+        data.len = RSTRING_LEN(to_send);
+        data.data = (unsigned char *) (RSTRING_PTR(to_send));
+
+        err = rb_thread_blocking_region( _sh_send_non_block, &data, NULL, NULL);
+
+        if(err != SHOUTERR_SUCCESS) {
+                raise_shout_error(s->conn);
+        }
+        return Qtrue;
+}
+
+static VALUE _sh_send_non_block(SEND_SHOUT_T *data) {
+        return shout_send(data->conn, data->data, data->len);
+}
+
 
 /* Sleep the necessary amount of time to play back the audio data sent since
  * the last call to #sync. After calling this, it's time to send more data. */
@@ -643,9 +682,10 @@ void Init_shout()
         rb_define_method(cShout, "open", _sh_connect, 0);
         rb_define_method(cShout, "disconnect", _sh_disconnect, 0);
         rb_define_method(cShout, "close", _sh_disconnect, 0);
-	rb_define_method(cShout, "connected?", _sh_connectedp, 0);
+        rb_define_method(cShout, "connected?", _sh_connectedp, 0);
 
         rb_define_method(cShout, "send", _sh_send, 1);
+        rb_define_method(cShout, "send_non_blockig", _sh_send_struct, 1);
         rb_define_method(cShout, "sync", _sh_sync, 0);
         rb_define_method(cShout, "delay", _sh_delay, 0);
 
@@ -667,7 +707,7 @@ void Init_shout()
         rb_define_method(cShout, "url",       _sh_url,         0);
         rb_define_method(cShout, "genre",     _sh_genre,       0);
         rb_define_method(cShout, "description",_sh_description,0);
-	/* metadata getting is still unsupported. */
+        /* metadata getting is still unsupported. */
         /* audio info thingy. */
         /* leave for version 2.2 */
 
@@ -691,9 +731,9 @@ void Init_shout()
         rb_define_method(cShout, "description=", _sh_description_eq,1);
         rb_define_method(cShout, "metadata=",   _sh_metadata_eq,    1);
 
-	rb_define_const(cShout, "HTTP", INT2FIX(SHOUT_PROTOCOL_HTTP));
-	rb_define_const(cShout, "XAUDIOCAST", INT2FIX(SHOUT_PROTOCOL_XAUDIOCAST));
-	rb_define_const(cShout, "ICY", INT2FIX(SHOUT_PROTOCOL_ICY));
+        rb_define_const(cShout, "HTTP", INT2FIX(SHOUT_PROTOCOL_HTTP));
+        rb_define_const(cShout, "XAUDIOCAST", INT2FIX(SHOUT_PROTOCOL_XAUDIOCAST));
+        rb_define_const(cShout, "ICY", INT2FIX(SHOUT_PROTOCOL_ICY));
 
         rb_define_const(cShout, "MP3", INT2FIX(SHOUT_FORMAT_MP3));
         rb_define_const(cShout, "OGG", INT2FIX(SHOUT_FORMAT_OGG));
