@@ -79,15 +79,6 @@ static void Init_shout_error() {
 }
 
 
-
-typedef struct {
-        shout_t *conn;
-        unsigned int len;
-        unsigned char *data;
-        } SEND_SHOUT_T;
-
-static VALUE _sh_send_non_block(SEND_SHOUT_T *data);
-
 static void raise_shout_error(shout_t *conn) {
         rb_raise(cShoutError, "%d: %s", shout_get_errno(conn),
                                         shout_get_error(conn));
@@ -257,32 +248,27 @@ static VALUE _sh_send(VALUE self, VALUE to_send) {
         return Qtrue;
 }
 
+/* The struct into which the arguments of _sh_send get packed
+ * to be able to wrap _sh_send in a rb_thread_blocking_region call. */
+typedef struct {
+        VALUE *self;
+        unsigned char *to_send;
+} SHOUT_SEND_ARGS;
 
-
-        
-/* Send some data. to_send is a String containing the data to send. */
-static VALUE _sh_send_struct(VALUE self, VALUE to_send) {
-        SEND_SHOUT_T data;
-        int err;
-        shout_connection *s;
-        GET_SC(self, s);
-
-        Check_SafeStr(to_send);
-        
-        data.conn = s->conn;
-        data.len = RSTRING_LEN(to_send);
-        data.data = (unsigned char *) (RSTRING_PTR(to_send));
-
-        err = rb_thread_blocking_region( _sh_send_non_block, &data, NULL, NULL);
-
-        if(err != SHOUTERR_SUCCESS) {
-                raise_shout_error(s->conn);
-        }
-        return Qtrue;
+/* The function to unpack the arguments out of the struct after
+ * having been wrapped in the rb_thread_blocking_region call. */
+static VALUE _sh_send_non_block_unpack(SHOUT_SEND_ARGS *send_args) {
+        return _sh_send(send_args->self, send_args->to_send);
 }
 
-static VALUE _sh_send_non_block(SEND_SHOUT_T *data) {
-        return shout_send(data->conn, data->data, data->len);
+/* The new _sh_send_non_blocking function (aka #send_non_blocking method)
+ * packing the arguments of _sh_send in a struct and wrapping the _sh_send
+ * call into a rb_thread_blocking_region call. */
+static VALUE _sh_send_non_blocking(VALUE self, VALUE to_send) {
+        SHOUT_SEND_ARGS send_args;
+        send_args.self    = self;
+        send_args.to_send = (unsigned char *) to_send;
+        return rb_thread_blocking_region(_sh_send_non_block_unpack, &send_args, RUBY_UBF_IO, NULL);
 }
 
 
@@ -685,7 +671,7 @@ void Init_shout()
         rb_define_method(cShout, "connected?", _sh_connectedp, 0);
 
         rb_define_method(cShout, "send", _sh_send, 1);
-        rb_define_method(cShout, "send_non_blockig", _sh_send_struct, 1);
+        rb_define_method(cShout, "send_non_blocking", _sh_send_non_blocking, 1);
         rb_define_method(cShout, "sync", _sh_sync, 0);
         rb_define_method(cShout, "delay", _sh_delay, 0);
 
