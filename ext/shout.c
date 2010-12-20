@@ -202,6 +202,14 @@ static VALUE _sh_connect(VALUE self) {
         return Qtrue;
 }
 
+/* The new _sh_connect_non_blocking function (aka #connect_non_blocking method)
+ * wrapping _sh_connect in a rb_thread_blocking_region call.
+ */
+static VALUE _sh_connect_non_blocking(VALUE self) {
+        return rb_thread_blocking_region(_sh_connect, self, RUBY_UBF_IO, NULL);
+}
+
+
 /* Disconnect from the server. */
 static VALUE _sh_disconnect(VALUE self) {
         int err;
@@ -665,6 +673,7 @@ void Init_shout()
 
         rb_define_method(cShout, "initialize", _sh_initialize, -1);
         rb_define_method(cShout, "connect", _sh_connect, 0);
+        rb_define_method(cShout, "connect_non_blocking", _sh_connect_non_blocking, 0);
         rb_define_method(cShout, "open", _sh_connect, 0);
         rb_define_method(cShout, "disconnect", _sh_disconnect, 0);
         rb_define_method(cShout, "close", _sh_disconnect, 0);

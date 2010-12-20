@@ -52,6 +52,44 @@ $LOAD_PATH.clear
 $LOAD_PATH << File.join(base_dir, "test/test_gem_installation/gems/ruby-shout-#{version}/lib")
 require 'shout'
 
+def test_all_non_blocking
+  blocksize = 16384
+
+  s = Shout.new
+  s.host = "localhost"
+  s.port = 8000
+  s.mount = "/test"
+  s.user = "source"
+  s.pass = "hackme"
+  s.format = Shout::MP3
+
+  s.connect_non_blocking
+
+  filename = File.join(File.dirname(__FILE__), 'test.mp3')
+
+  File.open(filename) do |file|
+    puts "=> sending data NONBLOCKING from #{filename}...\n     go check http://localhost:8000/test"
+    m = ShoutMetadata.new
+    m.add 'filename', filename
+    m.add 'artist', 'gromozek'
+    m.add 'title', 'melange'
+    s.metadata = m
+
+    5.times do
+      data = file.read(blocksize)
+      s.send_non_blocking data
+      print '.'
+      s.sync
+    end
+  end
+
+  s.disconnect
+ensure
+  clean_test_gem
+end
+
+test_all_non_blocking
+
 def test_all
   blocksize = 16384
 
@@ -89,41 +127,3 @@ ensure
 end
 
 test_all
-
-def test_all_non_blocking
-  blocksize = 16384
-
-  s = Shout.new
-  s.host = "localhost"
-  s.port = 8000
-  s.mount = "/test"
-  s.user = "source"
-  s.pass = "hackme"
-  s.format = Shout::MP3
-
-  s.connect
-
-  filename = File.join(File.dirname(__FILE__), 'test.mp3')
-
-  File.open(filename) do |file|
-    puts "=> sending data NONBLOCKING from #{filename}...\n     go check http://localhost:8000/test"
-    m = ShoutMetadata.new
-    m.add 'filename', filename
-    m.add 'artist', 'gromozek'
-    m.add 'title', 'melange'
-    s.metadata = m
-
-    5.times do
-      data = file.read(blocksize)
-      s.send_non_blocking data
-      print '.'
-      s.sync
-    end
-  end
-
-  s.disconnect
-ensure
-  clean_test_gem
-end
-
-test_all_non_blocking
