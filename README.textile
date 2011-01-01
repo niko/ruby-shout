@@ -16,11 +16,56 @@ h2. Usage
 
 See example.rb. Run it like
 
-  ./example.rb test/test.mp3
+  ./example.rb spec/test.mp3
+
+h2. Ruby 1.9 and encoding
+
+Ruby 1.9 features really good encoding support: Each string has it's own explicit encoding. The default encoding for Icecast is ISO-8859-1 for station data and meta data.
+
+In order to make ruby-shout play nice with ruby 1.9 all I added a Shout#charset setter and all string accessors for station data are wrapped:
+
+* setters convert the given string to the given charset
+* and store the original string, available under #original_..., for example #original_description. This is done because converting may alter your string (characters incompatible with conversion are just swallowed). That way you are able to get your original string back (should you need it) and the getter is enabled to:
+* getters convert the value back to the original encoding, determined by the #original_... method.
+
+The idea is: We want to guaranty that strings keep their encoding when assigning them via a Shout accessor. In case strings are not compatible with Icecasts charset we want to degrade as gracefully as possible. IMHO just dropping incompatible characters does this best (when being listed in an external YP directory these "???br?" things just look awful). If you want to make sure this doesn't happen you have to compare the value before and after assigning it (or just compare for example #description with #original_description).
+
+h3. Synopsis:
+
+  s = Shout.new
+  s.charset = 'UTF-8'
+  s.description = 'dikşîne MUSłϾ'
+  puts s.description              # => 'dikşîne MUSłϾ'
+
+  s = Shout.new
+  s.charset = 'ISO-8859-1'        # this is the default
+  s.description = 'dikşîne MUSłϾ'
+  puts s.description              # => 'dikîne MUSłϾ'
+  puts s.original_description     # => 'dikşîne MUSłϾ'
+
+h3. Icecast charset config
+
+If you use s/th else than ISO-8859-1 you should configure your icecast accordingly: In the mount section set the charset:
+
+  <mount>
+    <mount-name>/your_station</mount-name>
+    <charset>UTF-8</charset>
+    ...
+  </mount>
+
+or (in the latest icecast builds)
+
+  <mount>
+    <mount-name>/*</mount-name>
+    <charset>UTF-8</charset>
+    ...
+  </mount>
+
+to set UTF-8 for all mountpoints.
 
 h2. Todo
 
-* proper unit tests (blush)
+* proper unit tests (blush) ; working on that
 
 h2. History & Credits
 
@@ -38,6 +83,8 @@ h2. Recent Changes
 * Added an integration test which builds and installs the gem and plays some sound on a local icecast server. I mainly did that because the old version of ruby-shout didn't even compile for ruby 1.9. Run with:
 
   rake test:integration
+
+* Added Ruby 1.9 encoding support.
 
 h2. State
 

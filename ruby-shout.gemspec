@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jared Jennings", "Niko Dittmann"]
-  s.date = %q{2010-12-20}
+  s.date = %q{2011-01-01}
   s.description = %q{Ruby bindings for libshout 2, a "Library which can be used to write a source client like ices" for Icecast (http://www.icecast.org/download.php).}
   s.email = %q{mail@niko-dittmann.com}
   s.extensions = ["ext/extconf.rb"]
@@ -21,7 +21,8 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "ext/extconf.rb",
-     "ext/shout.c"
+     "ext/shout_ext.c",
+     "lib/shout.rb"
   ]
   s.homepage = %q{http://github.com/niko/ruby-shout}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -30,7 +31,10 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Send audio over the network to an Icecast server}
   s.test_files = [
-    "test/integration-test.rb"
+    "spec/accessors_spec.rb",
+     "spec/build_spec.rb",
+     "spec/integration_spec.rb",
+     "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then

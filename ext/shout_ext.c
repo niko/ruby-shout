@@ -662,7 +662,7 @@ VALUE _sh_metadata_eq(VALUE self, VALUE meta) {
 ----------------------------------------------------------------
 */
 
-void Init_shout()
+void Init_shout_ext()
 {
         cShout = rb_define_class("Shout", rb_cObject);
 

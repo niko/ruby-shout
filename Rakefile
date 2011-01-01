@@ -1,13 +1,14 @@
 require 'rubygems'
 require 'rake/gempackagetask'
+require 'spec/rake/spectask'
 
-task :default => [:test]
+$TESTING_MINIUNIT = true
 
-namespace :test do
-  desc "run the build integration test"
-  task :integration do
-    ruby "test/integration-test.rb"
-  end
+desc "Run spec with specdoc output"
+Spec::Rake::SpecTask.new do |t|
+  spec_files = Dir.glob('spec/*_spec.rb')
+  t.spec_files = spec_files
+  t.spec_opts << '--format specdoc -c'
 end
 
 begin
@@ -21,7 +22,7 @@ begin
     s.authors     = ["Jared Jennings", "Niko Dittmann"]
     s.require_paths = ["lib"]
     s.rubyforge_project = 'ruby-shout'
-    s.files       = FileList["[A-Z]*", "{ext}/*"]
+    s.files       = FileList["[A-Z]*", "{ext}/*", "{lib}/*"]
     
   end
 rescue LoadError
