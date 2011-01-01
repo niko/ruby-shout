@@ -23,7 +23,7 @@ h2. Ruby 1.9 and encoding
 
 Ruby 1.9 features really good encoding support: Each string has it's own explicit encoding. The default encoding for Icecast is ISO-8859-1 for station data and meta data.
 
-In order to make ruby-shout play nice with ruby 1.9 all I added a Shout#charset setter and all string accessors for station data are wrapped:
+In order to make ruby-shout play nice with ruby 1.9 I added a Shout#charset setter and all string accessors for station data are wrapped:
 
 * setters convert the given string to the given charset
 * and store the original string, available under #original_..., for example #original_description. This is done because converting may alter your string (characters incompatible with conversion are just swallowed). That way you are able to get your original string back (should you need it) and the getter is enabled to:
@@ -66,6 +66,14 @@ or (in the latest icecast builds)
 </code></pre>
 
 to set UTF-8 for all mountpoints.
+
+h2. Running the spec
+
+Before the first run and if you change C-Code run the build specs first as the other specs use its output (the built gem).
+
+<pre><code>rake spec:build
+rake spec
+</code></pre>
 
 h2. Todo
 

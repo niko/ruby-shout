@@ -52,7 +52,7 @@ describe "Integration Test" do
       @shout.disconnect
     end
     describe "blocking" do
-      it "should description connect and send" do
+      it "should connect and send" do
         @shout.mount = 'test_all'
         @shout.connect
         @shout.metadata = @meta
@@ -74,7 +74,7 @@ describe "Integration Test" do
       end
     end
     describe "non-blocking" do
-      it "should description connect_non_blocking and send_non_blocking" do
+      it "should connect_non_blocking and send_non_blocking" do
         pending 'rb19 only' if RUBY_VERSION < '1.9'
         @shout.mount = 'test_all_non_blocking'
         @shout.connect_non_blocking

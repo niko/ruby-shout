@@ -203,7 +203,7 @@ static VALUE _sh_connect(VALUE self) {
 }
 
 
-#if defined(HAVE_RB_THREAD_BLOCKING_REGION)
+#if HAVE_RB_THREAD_BLOCKING_REGION
 /* The new _sh_connect_non_blocking function (aka #connect_non_blocking method)
  * wrapping _sh_connect in a rb_thread_blocking_region call.
  */

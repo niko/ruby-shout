@@ -7,7 +7,14 @@ $TESTING_MINIUNIT = true
 desc "Run spec with specdoc output"
 Spec::Rake::SpecTask.new do |t|
   spec_files = Dir.glob('spec/*_spec.rb')
+  spec_files.delete 'spec/build_spec.rb'
   t.spec_files = spec_files
+  t.spec_opts << '--format specdoc -c'
+end
+
+desc "Run the build spec"
+Spec::Rake::SpecTask.new 'spec:build' do |t|
+  t.spec_files = ['spec/build_spec.rb']
   t.spec_opts << '--format specdoc -c'
 end
 
