@@ -84,9 +84,7 @@ h2. Recent Changes
 * Included the "ruby 1.9 patch":http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?revision=1.1&view=markup although it seems to have "some issues":http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/dev-ruby/ruby-shout/files/ruby-shout-2.1%2Bruby-1.9.patch?view=log. I hope to have fixed the issues with this:
 * Replaced STR2CSTR for StringValuePtr as STR2CSTR doesn't work for 1.9 any more
 * Added format = Shout::MP3 to the example as this is absolutely needed by the latest versions of libshout.
-* Added an integration test which builds and installs the gem and plays some sound on a local icecast server. I mainly did that because the old version of ruby-shout didn't even compile for ruby 1.9. Run with:
-
-  rake test:integration
+* Added a build test which builds and installs the gem and an integration test that plays some sound on a local icecast server. Be sure to adopt the server setting before running. I mainly did that because the old version of ruby-shout didn't even compile for ruby 1.9.
 
 * Added Ruby 1.9 encoding support.
 
