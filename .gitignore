@@ -1,2 +1,2 @@
 pkg
-test/gem
+spec/test_gem_installation
