@@ -202,12 +202,15 @@ static VALUE _sh_connect(VALUE self) {
         return Qtrue;
 }
 
+
+#if defined(HAVE_RB_THREAD_BLOCKING_REGION)
 /* The new _sh_connect_non_blocking function (aka #connect_non_blocking method)
  * wrapping _sh_connect in a rb_thread_blocking_region call.
  */
 static VALUE _sh_connect_non_blocking(VALUE self) {
         return rb_thread_blocking_region(_sh_connect, self, RUBY_UBF_IO, NULL);
 }
+#endif
 
 
 /* Disconnect from the server. */
@@ -256,6 +259,8 @@ static VALUE _sh_send(VALUE self, VALUE to_send) {
         return Qtrue;
 }
 
+
+#if HAVE_RB_THREAD_BLOCKING_REGION
 /* The struct into which the arguments of _sh_send get packed
  * to be able to wrap _sh_send in a rb_thread_blocking_region call. */
 typedef struct {
@@ -278,6 +283,7 @@ static VALUE _sh_send_non_blocking(VALUE self, VALUE to_send) {
         send_args.to_send = (unsigned char *) to_send;
         return rb_thread_blocking_region(_sh_send_non_block_unpack, &send_args, RUBY_UBF_IO, NULL);
 }
+#endif
 
 
 /* Sleep the necessary amount of time to play back the audio data sent since
@@ -673,14 +679,22 @@ void Init_shout_ext()
 
         rb_define_method(cShout, "initialize", _sh_initialize, -1);
         rb_define_method(cShout, "connect", _sh_connect, 0);
+
+        #if defined(HAVE_RB_THREAD_BLOCKING_REGION)
         rb_define_method(cShout, "connect_non_blocking", _sh_connect_non_blocking, 0);
+        #endif
+
         rb_define_method(cShout, "open", _sh_connect, 0);
         rb_define_method(cShout, "disconnect", _sh_disconnect, 0);
         rb_define_method(cShout, "close", _sh_disconnect, 0);
         rb_define_method(cShout, "connected?", _sh_connectedp, 0);
 
         rb_define_method(cShout, "send", _sh_send, 1);
+
+        #if defined(HAVE_RB_THREAD_BLOCKING_REGION)
         rb_define_method(cShout, "send_non_blocking", _sh_send_non_blocking, 1);
+        #endif
+
         rb_define_method(cShout, "sync", _sh_sync, 0);
         rb_define_method(cShout, "delay", _sh_delay, 0);
 

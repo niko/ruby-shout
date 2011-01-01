@@ -6,11 +6,12 @@ describe "Accessors" do
   before(:each) do
     @shout = Shout.new
     @description = 'çaffé düdeldø'
-    @genre = 'foobar'.encode('ISO-8859-1')
+    @genre = 'foobar'
     @shout.genre = @genre
     @shout.description = @description
   end
   it "should not change the original encoding" do
+    pending 'rb19 only' if RUBY_VERSION < '1.9'
     @shout.description.encoding.should == @description.encoding
     @shout.genre.encoding.should == @genre.encoding
   end

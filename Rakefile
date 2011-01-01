@@ -22,7 +22,7 @@ begin
     s.authors     = ["Jared Jennings", "Niko Dittmann"]
     s.require_paths = ["lib"]
     s.rubyforge_project = 'ruby-shout'
-    s.files       = FileList["[A-Z]*", "{ext}/*", "{lib}/*"]
+    s.files       = FileList["[A-Z]*", "{ext}/*", "{lib}/**/*"]
     
   end
 rescue LoadError

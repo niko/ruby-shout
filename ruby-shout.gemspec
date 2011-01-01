@@ -22,7 +22,9 @@ Gem::Specification.new do |s|
      "VERSION",
      "ext/extconf.rb",
      "ext/shout_ext.c",
-     "lib/shout.rb"
+     "lib/shout.rb",
+     "lib/shout/rb18_specific.rb",
+     "lib/shout/rb19_specific.rb"
   ]
   s.homepage = %q{http://github.com/niko/ruby-shout}
   s.rdoc_options = ["--charset=UTF-8"]

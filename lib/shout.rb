@@ -1,6 +1,5 @@
 $LOAD_PATH << File.expand_path(File.dirname(__FILE__))
 require 'shout_ext'
-require 'shout/string_extension_rb_18'
 
 class Shout
   attr_accessor :charset
@@ -8,24 +7,6 @@ class Shout
   INT_ACCESSORS    = :port, :format
   STRING_ACCESSORS = :host, :user, :username, :pass, :password, :protocol, :mount, :dumpfile,
                      :agent, :user_agent, :public, :name, :url, :genre, :description
-  
-  STRING_ACCESSORS.each do |accessor|
-    attr_accessor :"original_#{accessor}"
-    
-    alias :"raw_#{accessor}"  :"#{accessor}"
-    define_method accessor do
-      return nil unless orig_acc = self.__send__("original_#{accessor}")
-      
-      decode self.__send__(:"raw_#{accessor}"), orig_acc.encoding.name
-    end
-    
-    alias :"raw_#{accessor}=" :"#{accessor}="
-    define_method :"#{accessor}=" do |value|
-      self.__send__ "original_#{accessor}=", value
-      
-      self.__send__ :"raw_#{accessor}=", encode(value)
-    end
-  end
   
   alias :ext_initialize :initialize
   def initialize(opts={})
@@ -39,11 +20,27 @@ class Shout
     a_opts.each{ |k,v| self.__send__ :"#{k}=", v }
   end
   
-  private
-    def encode(s)
-      s.encode(charset, :invalid => :replace, :undef => :replace, :replace => '')
+  STRING_ACCESSORS.each do |accessor|
+    attr_accessor :"original_#{accessor}"
+    
+    alias :"raw_#{accessor}"  :"#{accessor}"
+    define_method accessor do
+      return nil unless orig_acc = self.__send__("original_#{accessor}")
+      
+      decode self.__send__(:"raw_#{accessor}"), orig_acc
     end
-    def decode(s, orig_charset)
-      s.encode(orig_charset, charset, :invalid => :replace, :undef => :replace, :replace => '')
+    
+    alias :"raw_#{accessor}=" :"#{accessor}="
+    define_method :"#{accessor}=" do |value|
+      self.__send__ "original_#{accessor}=", value
+      
+      self.__send__ :"raw_#{accessor}=", encode(value)
     end
+  end
+  
+end
+
+case 
+when RUBY_VERSION >= '1.9' then require 'shout/rb19_specific'
+when RUBY_VERSION <  '1.9' then require 'shout/rb18_specific'
 end

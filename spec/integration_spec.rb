@@ -8,6 +8,7 @@
 
 require File.join(File.expand_path(File.dirname(__FILE__)), 'spec_helper')
 
+require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
 
@@ -72,9 +73,10 @@ describe "Integration Test" do
 
       end
     end
-    describe "non blocking (rb_thread_blocking_region)" do
-      it "should description connect and send" do
-        @shout.mount = 'test_all_nonblocking'
+    describe "non-blocking" do
+      it "should description connect_non_blocking and send_non_blocking" do
+        pending 'rb19 only' if RUBY_VERSION < '1.9'
+        @shout.mount = 'test_all_non_blocking'
         @shout.connect_non_blocking
         @shout.metadata = @meta
 
@@ -86,7 +88,7 @@ describe "Integration Test" do
             @shout.sync
 
             if mountpoints = get_mountpoints(@shout)
-              mountpoints.should include "Mount Point /test_all_nonblocking"
+              mountpoints.should include "Mount Point /test_all_non_blocking"
               break
             end
           end
