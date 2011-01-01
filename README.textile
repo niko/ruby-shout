@@ -33,8 +33,7 @@ The idea is: We want to guaranty that strings keep their encoding when assigning
 
 h3. Synopsis:
 
-<pre><code>
-s = Shout.new
+<pre><code>s = Shout.new
 s.charset = 'UTF-8'
 s.description = 'dikşîne MUSłϾ'
 puts s.description              # => 'dikşîne MUSłϾ'
@@ -51,19 +50,19 @@ h3. Icecast charset config
 If you use s/th else than ISO-8859-1 you should configure your icecast accordingly: In the mount section set the charset:
 
 <pre><code><mount>
-    <mount-name>/your_station</mount-name>
-    <charset>UTF-8</charset>
-    ...
-  </mount>
+  <mount-name>/your_station</mount-name>
+  <charset>UTF-8</charset>
+  ...
+</mount>
 </code></pre>
 
 or (in the latest icecast builds)
 
 <pre><code><mount>
-    <mount-name>/*</mount-name>
-    <charset>UTF-8</charset>
-    ...
-  </mount>
+  <mount-name>/*</mount-name>
+  <charset>UTF-8</charset>
+  ...
+</mount>
 </code></pre>
 
 to set UTF-8 for all mountpoints.
