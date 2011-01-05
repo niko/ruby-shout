@@ -1,5 +1,9 @@
 h1. Ruby-Shout
 
+h2. Compatibility note
+
+If you have installed a previous version of ruby-shout you have to make shure the shout.o files aren't there any more. Otherwise the build will fail.
+
 h2. Purpose
 
 ruby-shout lets you send compressed audio over the network to an "Icecast":http://www.icecast.org/ streaming media server.
@@ -69,11 +73,16 @@ to set UTF-8 for all mountpoints.
 
 h2. Running the spec
 
-Before the first run and if you change C-Code run the build specs first as the other specs use its output (the built gem).
+h3. General note: use rake spec:build
 
-<pre><code>rake spec:build
-rake spec
+Before each run you have to run the build specs first as the other specs use its output (the built gem).
+
+<pre><code>rake spec:build && rake spec
 </code></pre>
+
+h3. For the integration spec
+
+You need to have an icecast server running. Perhaps you want to adopt the server setting quite at the top of the intergration_spec.rb
 
 h2. Todo
 
