@@ -2,7 +2,7 @@ $LOAD_PATH << File.expand_path(File.dirname(__FILE__))
 require 'shout_ext'
 
 class Shout
-  attr_accessor :charset
+  attr_writer :charset
   
   INT_ACCESSORS    = :port, :format
   STRING_ACCESSORS = :host, :user, :username, :pass, :password, :protocol, :mount, :dumpfile,
@@ -12,12 +12,9 @@ class Shout
   def initialize(opts={})
     ext_initialize
     
-    self.charset = opts[:charset] || 'ISO-8859-1'
-    
-    accessors = STRING_ACCESSORS + INT_ACCESSORS + [:charset]
-    a_opts = opts.select{ |k,v| accessors.include? k }
-    
-    a_opts.each{ |k,v| self.__send__ :"#{k}=", v }
+    (STRING_ACCESSORS + INT_ACCESSORS + [:charset]).each do |a|
+      self.__send__ :"#{a}=", opts[a] if opts[a]
+    end
   end
   
   STRING_ACCESSORS.each do |accessor|
@@ -38,9 +35,21 @@ class Shout
     end
   end
   
-end
-
-case 
-when RUBY_VERSION >= '1.9' then require 'shout/rb19_specific'
-when RUBY_VERSION <  '1.9' then require 'shout/rb18_specific'
+  def charset
+    @charset || ((format && format==Shout::MP3) ? 'ISO-8859-1' : 'UTF-8')
+  end
+  
+  private
+    def encode(s)
+      return s unless s.is_a? String
+      
+      s.encode(charset, :invalid => :replace, :undef => :replace, :replace => '')
+    end
+    def decode(s, orig_string)
+      return s unless s.is_a? String
+      
+      orig_charset = orig_string.encoding.name
+      s.encode(orig_charset, charset, :invalid => :replace, :undef => :replace, :replace => '')
+    end
+  
 end

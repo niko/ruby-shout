@@ -2,8 +2,6 @@ require 'rubygems'
 require 'rake/gempackagetask'
 require 'spec/rake/spectask'
 
-$TESTING_MINIUNIT = true
-
 desc "Run spec with specdoc output"
 Spec::Rake::SpecTask.new do |t|
   spec_files = Dir.glob('spec/*_spec.rb')

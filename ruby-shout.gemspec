@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jared Jennings", "Niko Dittmann"]
-  s.date = %q{2011-01-01}
+  s.date = %q{2011-01-05}
   s.description = %q{Ruby bindings for libshout 2, a "Library which can be used to write a source client like ices" for Icecast (http://www.icecast.org/download.php).}
   s.email = %q{mail@niko-dittmann.com}
   s.extensions = ["ext/extconf.rb"]
@@ -22,9 +22,7 @@ Gem::Specification.new do |s|
      "VERSION",
      "ext/extconf.rb",
      "ext/shout_ext.c",
-     "lib/shout.rb",
-     "lib/shout/rb18_specific.rb",
-     "lib/shout/rb19_specific.rb"
+     "lib/shout.rb"
   ]
   s.homepage = %q{http://github.com/niko/ruby-shout}
   s.rdoc_options = ["--charset=UTF-8"]

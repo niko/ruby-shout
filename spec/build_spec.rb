@@ -7,6 +7,7 @@ describe "Build process" do
   def remove_pkg
     command = %Q{
       cd #{BASE_DIR}
+      puts "rm -rf pkg in #{BASE_DIR}"
       rm -rf pkg
     }
     c = `#{command}`
@@ -17,6 +18,7 @@ describe "Build process" do
   def clean_test_gem
     command = %Q{
       cd #{BASE_DIR}
+      echo "rm -rf spec/test_gem_installation in #{BASE_DIR}"
       rm -rf spec/test_gem_installation
     }
     c = `#{command}`

@@ -13,8 +13,8 @@ require 'nokogiri'
 require 'open-uri'
 
 CONNECT_DATA = {
-  # :host   => "localhost",
-  :host   => "192.168.178.34",
+  :host   => "localhost",
+  # :host   => "192.168.178.34",
   :port   => 8000,
   :user   => "source",
   :pass   => "hackme",
