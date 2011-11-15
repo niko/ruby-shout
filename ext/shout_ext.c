@@ -437,6 +437,15 @@ VALUE _sh_description(VALUE self) {
         return rb_str_new2(value);
 }
 
+VALUE _sh_bitrate(VALUE self) {
+  const char *value;
+
+  shout_connection *s; GET_SC(self, s);
+
+  value = shout_get_audio_info(s->conn, SHOUT_AI_BITRATE);
+  return rb_str_new2(value);
+}
+
 /* Unimplemented: audio_info */
 
 /* audio_info and metadata should both be objects that always exist, and have
@@ -662,6 +671,18 @@ VALUE _sh_metadata_eq(VALUE self, VALUE meta) {
         return meta;
 }
 
+/* Set the 'bitrate' in the audio_info of the stream. */
+VALUE _sh_bitrate_eq(VALUE self, VALUE value) {
+        int err;
+        shout_connection *s; GET_SC(self, s);
+
+        Check_Type(value, T_STRING);
+        err = shout_set_audio_info(s->conn, SHOUT_AI_BITRATE, RSTRING_PTR(value));
+        if(err != SHOUTERR_SUCCESS) {
+                raise_shout_error(s->conn);
+        }
+        return value;
+}
 
 
 /*
@@ -716,6 +737,7 @@ void Init_shout_ext()
         rb_define_method(cShout, "url",       _sh_url,         0);
         rb_define_method(cShout, "genre",     _sh_genre,       0);
         rb_define_method(cShout, "description",_sh_description,0);
+        rb_define_method(cShout, "bitrate",   _sh_bitrate,     0);
         /* metadata getting is still unsupported. */
         /* audio info thingy. */
         /* leave for version 2.2 */
@@ -739,6 +761,7 @@ void Init_shout_ext()
         rb_define_method(cShout, "genre=",      _sh_genre_eq,       1);
         rb_define_method(cShout, "description=", _sh_description_eq,1);
         rb_define_method(cShout, "metadata=",   _sh_metadata_eq,    1);
+        rb_define_method(cShout, "bitrate=",    _sh_bitrate_eq,     1);
 
         rb_define_const(cShout, "HTTP", INT2FIX(SHOUT_PROTOCOL_HTTP));
         rb_define_const(cShout, "XAUDIOCAST", INT2FIX(SHOUT_PROTOCOL_XAUDIOCAST));
