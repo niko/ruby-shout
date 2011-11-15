@@ -21,6 +21,10 @@ describe "Accessors" do
       @shout.original_genre.should == @genre
     end
   end
+  it "should get and set the bitrate in audio_info" do
+    @shout.bitrate = "128"
+    @shout.bitrate.should == "128"
+  end
   describe "#initialize" do
     it "should set the properies from the opts" do
       s = Shout.new :user => 'heinz'
