@@ -1,4 +1,4 @@
-require 'spec'
+require 'rspec'
 
 BASE_DIR = File.expand_path File.join(File.dirname(__FILE__), '..')
 VERSION = File.open(File.join(BASE_DIR, 'VERSION')).readline.strip

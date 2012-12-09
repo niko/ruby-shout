@@ -1,19 +1,17 @@
 require 'rubygems'
 require 'rake/gempackagetask'
-require 'spec/rake/spectask'
+require 'rspec/core/rake_task'
 
-desc "Run spec with specdoc output"
-Spec::Rake::SpecTask.new do |t|
-  spec_files = Dir.glob('spec/*_spec.rb')
-  spec_files.delete 'spec/build_spec.rb'
-  t.spec_files = spec_files
-  t.spec_opts << '--format specdoc -c'
+desc "Run spec with documentation output"
+RSpec::Core::RakeTask.new do |t|
+  t.pattern = Dir.glob('spec/*_spec.rb')
+  t.rspec_opts = '--format documentation -c'
 end
 
 desc "Run the build spec"
-Spec::Rake::SpecTask.new 'spec:build' do |t|
-  t.spec_files = ['spec/build_spec.rb']
-  t.spec_opts << '--format specdoc -c'
+RSpec::Core::RakeTask.new 'spec:build' do |t|
+  t.pattern = ['spec/build_spec.rb']
+  t.rspec_opts = '--format documentation -c'
 end
 
 begin
