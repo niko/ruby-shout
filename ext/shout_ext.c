@@ -46,6 +46,10 @@
 #define RSTRING_PTR(str)        RSTRING(str)->ptr
 #endif
 
+#ifdef SafeStringValue
+#define Check_SafeStr           SafeStringValue
+#endif
+
 /*
 ----------------- ShoutError --------------------
  */
