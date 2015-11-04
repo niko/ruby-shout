@@ -15,10 +15,11 @@ require File.join(BASE_DIR, "spec/test_gem_installation/gems/ruby-shout-#{VERSIO
 BLOCKSIZE = 16384
 
 s = Shout.new
-s.mount = "/example"
+s.mount = "/some_mountpoint"
 # s.charset = "UTF-8"
 # s.mount = "/utf8"
-s.host = "192.168.178.34"
+s.host = "some.host.org"
+s.port = 8080
 s.user = "source"
 s.pass = "hackme"
 s.format = Shout::MP3

@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "ruby-shout"
-  s.version = "2.2.1"
+  s.version = "2.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jared Jennings", "Niko Dittmann"]
@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "ruby-shout"
   s.rubygems_version = "1.8.10"
   s.summary = "Send audio over the network to an Icecast server"
+  s.license = "BSD License"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
