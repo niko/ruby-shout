@@ -18,8 +18,8 @@ s = Shout.new
 s.mount = "/some_mountpoint"
 # s.charset = "UTF-8"
 # s.mount = "/utf8"
-s.host = "some.host.org"
 s.port = 8080
+s.host = "127.0.0.1"
 s.user = "source"
 s.pass = "hackme"
 s.format = Shout::MP3
@@ -27,7 +27,7 @@ s.description ='çaffé düdeldø … dikşîne ΞŁΞϾТЯФЛłϾ MUSłϾ  �
 
 s.connect
 
-puts "open VLC and open network -> http://#{s.host}:#{s.port}/example"
+puts "open VLC and open network -> http://#{s.host}:#{s.port}/#{s.mount}"
 
 ARGV.each do |filename|
   File.open(filename) do |file|
@@ -38,6 +38,7 @@ ARGV.each do |filename|
     s.metadata = m
 
     while data = file.read(BLOCKSIZE)
+      print '.'
       s.send data
       s.sync
     end
